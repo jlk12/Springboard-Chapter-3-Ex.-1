@@ -96,3 +96,61 @@ refine_original4 %>%
 Include your code, the original data as a CSV file refine_original.csv, and the cleaned up data as a CSV file called refine_clean.csv.
 
 write.csv(refine_original, file = "refine_clean.csv")
+
+# Springboard-Chapter-3-Ex.-2
+
+0: Load the data in RStudio
+
+Save the data set as a CSV file called titanic_original.csv and load it in RStudio into a data frame.
+
+titanic_original <- read_csv
+
+1: Port of embarkation
+
+The embarked column has some missing values, which are known to correspond to passengers who actually embarked at Southampton. Find the missing values and replace them with S. (Caution: Sometimes a missing value might be read into R as a blank or empty string.)
+
+titanic_original %>% mutate(embarked = if_else(is.na(embarked), 'S', embarked))
+
+titanic_original %>% select(embarked) %>% unique()
+
+2: Age
+
+You’ll notice that a lot of the values in the Age column are missing. While there are many ways to fill these missing values, using the mean or median of the rest of the values is quite common in such cases.
+
+Calculate the mean of the Age column and use that value to populate the missing values
+
+titanic_original %>% mutate(age = if_else(is.na(age), mean(age, na.rm = TRUE), age))
+
+Think about other ways you could have populated the missing values in the age column. Why would you pick any of those over the mean (or not)?
+
+I would still pick mean as the best way to figure out this problem. You could use median, but mean would give a more accurate assessment of the passangers' ages.
+
+3: Lifeboat
+
+You’re interested in looking at the distribution of passengers in different lifeboats, but as we know, many passengers did not make it to a boat :-( This means that there are a lot of missing values in the boat column. Fill these empty slots with a dummy value e.g. the string 'None' or 'NA'
+
+any(is.na(titanic_original$cabin))
+
+any(titanic_original$cabin=="", na.rm = TRUE)
+
+4: Cabin
+
+You notice that many passengers don’t have a cabin number associated with them.
+
+Does it make sense to fill missing cabin numbers with a value?
+
+ No, since we don't have that information. 
+
+What does a missing value here mean?
+
+1) There was no assigned cabin. 2) There is no record of the cabin number
+
+You have a hunch that the fact that the cabin number is missing might be a useful indicator of survival. Create a new column has_cabin_number which has 1 if there is a cabin number, and 0 otherwise.
+
+library(tibble)
+
+add_column (has_cabin_number <- if_else(is.na(titanic_original$cabin), 0, 1))
+
+6: Submit the project on Github
+
+Include your code, the original data as a CSV file titanic_original.csv, and the cleaned up data as a CSV file called titanic_clean.csv.
