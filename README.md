@@ -148,8 +148,12 @@ You have a hunch that the fact that the cabin number is missing might be a usefu
 
 library(tibble)
 
-add_column (has_cabin_number <- if_else(is.na(titanic_original$cabin), 0, 1))
+add_column (titanic_original, new = has_cabin_number) %>%
+
+mutate(has_cabin_number=as.integer(!is.na(titanic_original$cabin)))
 
 6: Submit the project on Github
 
 Include your code, the original data as a CSV file titanic_original.csv, and the cleaned up data as a CSV file called titanic_clean.csv.
+
+write.csv(titanic_original,"titanic_clean.csv")
